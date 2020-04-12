@@ -1,12 +1,11 @@
 <template>
   <div id="app">
-    <button @click="getCards">Load</button>
-  <div id="cards-container">
-    <card
-      v-for="card in cards"
-      :key="card.id"
-      :card="card" />
-  </div>
+    <div id="cards-container">
+      <card
+        v-for="card in cards"
+        :key="card.id"
+        :card="card" />
+    </div>
   </div>
 </template>
 
@@ -28,6 +27,14 @@ export default class App extends Vue {
     super();
     this.cards = [];
     this.getCards();
+
+    window.onscroll = () => {
+      const atBottom = document.documentElement.scrollTop + window.innerHeight
+        === document.documentElement.offsetHeight;
+      if (atBottom && !this.$store.state.loading) {
+        this.getCards();
+      }
+    };
   }
 
   async getCards() {
@@ -40,9 +47,11 @@ export default class App extends Vue {
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
+  display: flex;
+  justify-content: center;
 }
 
-.cards-container {
+#cards-container {
   width: 960px;
   display: flex;
   flex-wrap: wrap;
