@@ -10,7 +10,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     loading: false,
-    cards: Array<CardModel>(),
+    newCards: Array<CardModel>(),
     currentPage: 1,
     lastPage: 1,
   },
@@ -21,8 +21,8 @@ export default new Vuex.Store({
     stopLoading(state) {
       state.loading = false;
     },
-    setCards(state, newCards: CardModel[]) {
-      state.cards = newCards;
+    setNewCards(state, newCards: CardModel[]) {
+      state.newCards = newCards;
     },
     increaseCurrentPage(state) {
       state.currentPage += 1;
@@ -32,7 +32,7 @@ export default new Vuex.Store({
     },
     clear(state) {
       state.currentPage = 1;
-      state.cards = [];
+      state.newCards = [];
     },
   },
   actions: {
@@ -44,8 +44,8 @@ export default new Vuex.Store({
       commit('stopLoading');
 
       if (response.status === 200) {
-        const cards = response.data.cards.map((card: any) => new CardModel(card));
-        commit('setCards', cards);
+        const newCards = response.data.cards.map((card: any) => new CardModel(card));
+        commit('setNewCards', newCards);
         commit('increaseCurrentPage');
 
         // eslint-disable-next-line no-underscore-dangle

@@ -9,41 +9,54 @@
         :key="card.id"
         :card="card" />
     </div>
+    <loading v-if="loading" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { mapActions, mapState } from 'vuex';
 import Card from '@/components/Card.vue';
+import Loading from '@/components/Loading.vue';
 import CardModel from '@/models/CardModel';
 
 
 @Component({
   components: {
     Card,
+    Loading,
   },
+  computed: mapState(['loading', 'newCards']),
+  methods: mapActions(['getCards']),
 })
 export default class App extends Vue {
   cards: CardModel[];
   nameToSearch = '';
 
+  // mapped properties
+  newCards!: CardModel[];
+  loading!: boolean;
+
+  // mapped actions
+  getCards!: Function;
+
   constructor() {
     super();
     this.cards = [];
-    this.getCards();
+    this.getMoreCards();
 
     window.onscroll = () => {
       const atBottom = document.documentElement.scrollTop + window.innerHeight
         === document.documentElement.offsetHeight;
-      if (atBottom && !this.$store.state.loading) {
-        this.getCards();
+      if (atBottom && !this.loading) {
+        this.getMoreCards();
       }
     };
   }
 
   async search() {
     this.clear();
-    await this.getCards();
+    await this.getMoreCards();
   }
 
   clear() {
@@ -51,9 +64,10 @@ export default class App extends Vue {
     this.$store.dispatch('clear');
   }
 
-  async getCards() {
-    await this.$store.dispatch('getCards', { name: this.nameToSearch });
-    this.cards = [...this.cards, ...this.$store.state.cards];
+  async getMoreCards() {
+    // await this.$store.dispatch('getCards', { name: this.nameToSearch });
+    await this.getCards({ name: this.nameToSearch });
+    this.cards = [...this.cards, ...this.newCards];
   }
 }
 </script>
