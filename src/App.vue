@@ -1,29 +1,50 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <button @click="getCards">Load</button>
+  <div id="cards-container">
+    <card
+      v-for="card in cards"
+      :key="card.id"
+      :card="card" />
+  </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from './components/HelloWorld.vue';
+import Card from '@/components/Card.vue';
+import CardModel from '@/models/CardModel';
+
 
 @Component({
   components: {
-    HelloWorld,
+    Card,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  cards: CardModel[];
+
+  constructor() {
+    super();
+    this.cards = [];
+    this.getCards();
+  }
+
+  async getCards() {
+    await this.$store.dispatch('getCards');
+    this.cards = [...this.cards, ...this.$store.state.cards];
+  }
+}
 </script>
 
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+}
+
+.cards-container {
+  width: 960px;
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>
