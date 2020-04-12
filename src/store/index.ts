@@ -12,6 +12,7 @@ export default new Vuex.Store({
     loading: false,
     cards: Array<CardModel>(),
     currentPage: 1,
+    lastPage: 1,
   },
   mutations: {
     startLoading(state) {
@@ -26,16 +27,20 @@ export default new Vuex.Store({
     increaseCurrentPage(state) {
       state.currentPage += 1;
     },
-    setLastPage(state) {
-      state.currentPage += 1;
+    setLastPage(state, newPage) {
+      state.lastPage = newPage;
+    },
+    clear(state) {
+      state.currentPage = 1;
+      state.cards = [];
     },
   },
   actions: {
-    async getCards({ commit, state }) {
+    async getCards({ commit, state }, { name }) {
       const els = new ELS();
 
       commit('startLoading');
-      const response = await els.getCards(state.currentPage);
+      const response = await els.getCards(state.currentPage, name);
       commit('stopLoading');
 
       if (response.status === 200) {
@@ -48,6 +53,9 @@ export default new Vuex.Store({
       } else {
         commit('setError', 'Error loading cards');
       }
+    },
+    clear({ commit }) {
+      commit('clear');
     },
   },
 });

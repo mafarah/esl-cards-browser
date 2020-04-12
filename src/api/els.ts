@@ -10,7 +10,7 @@ export default class ELS {
     });
   }
 
-  public getCards(page: number) {
-    return this.client.get(`cards?page=${page}&pageSize=20`);
+  public getCards(page: number, name = '') {
+    return this.client.get(`cards?pageSize=20&page=${page}&name=${name}`);
   }
 }

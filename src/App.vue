@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+    <input
+      v-model="nameToSearch"
+      @blur="search" />
     <div id="cards-container">
       <card
         v-for="card in cards"
@@ -22,6 +25,7 @@ import CardModel from '@/models/CardModel';
 })
 export default class App extends Vue {
   cards: CardModel[];
+  nameToSearch = '';
 
   constructor() {
     super();
@@ -37,8 +41,18 @@ export default class App extends Vue {
     };
   }
 
+  async search() {
+    this.clear();
+    await this.getCards();
+  }
+
+  clear() {
+    this.cards = [];
+    this.$store.dispatch('clear');
+  }
+
   async getCards() {
-    await this.$store.dispatch('getCards');
+    await this.$store.dispatch('getCards', { name: this.nameToSearch });
     this.cards = [...this.cards, ...this.$store.state.cards];
   }
 }
@@ -48,7 +62,8 @@ export default class App extends Vue {
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 #cards-container {
