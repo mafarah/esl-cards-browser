@@ -22,7 +22,7 @@ import { mapState, mapActions } from 'vuex';
     CardsContainer,
     Loading,
   },
-  computed: mapState(['loading']),
+  computed: mapState(['atLastPage', 'loading']),
   methods: mapActions(['getCards', 'resetState', 'searchCards']),
 })
 export default class Main extends Vue {
@@ -30,6 +30,7 @@ export default class Main extends Vue {
 
   // mapped properties
   loading!: boolean;
+  atLastPage !: boolean;
 
   // mapped actions
   getCards!: Function;
@@ -60,7 +61,7 @@ export default class Main extends Vue {
   }
 
   shouldTriggerLoad() {
-    return !this.loading;
+    return !this.loading && !this.atLastPage;
   }
 
   getNameToSearch() {
