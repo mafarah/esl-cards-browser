@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import ELS from '@/api/els';
-import { CARDS_PAGE_SIZE } from '@/constants/values';
 import CardModel from '@/models/CardModel';
 
 
@@ -10,9 +9,9 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     loading: false,
-    newCards: Array<CardModel>(),
+    cards: Array<CardModel>(),
     currentPage: 1,
-    lastPage: 1,
+    atLastPage: false,
   },
   mutations: {
     startLoading(state) {
@@ -21,22 +20,22 @@ export default new Vuex.Store({
     stopLoading(state) {
       state.loading = false;
     },
-    setNewCards(state, newCards: CardModel[]) {
-      state.newCards = newCards;
+    addCards(state, newCards: CardModel[]) {
+      state.cards = [...state.cards, ...newCards];
     },
     increaseCurrentPage(state) {
       state.currentPage += 1;
     },
-    setLastPage(state, newPage) {
-      state.lastPage = newPage;
+    reachedLastPage(state) {
+      state.atLastPage = true;
     },
-    clear(state) {
+    resetState(state) {
       state.currentPage = 1;
-      state.newCards = [];
+      state.cards = [];
     },
   },
   actions: {
-    async getCards({ commit, state }, { name }) {
+    async getCards({ commit, state }, name) {
       const els = new ELS();
 
       commit('startLoading');
@@ -45,17 +44,23 @@ export default new Vuex.Store({
 
       if (response.status === 200) {
         const newCards = response.data.cards.map((card: any) => new CardModel(card));
-        commit('setNewCards', newCards);
+        commit('addCards', newCards);
         commit('increaseCurrentPage');
 
         // eslint-disable-next-line no-underscore-dangle
-        commit('setLastPage', Math.ceil(response.data._totalSize / CARDS_PAGE_SIZE));
+        const atlastPage = !response.data._links || !response.data._links.next;
+        if (atlastPage) {
+          commit('reachedLastPage');
+        }
       } else {
         commit('setError', 'Error loading cards');
       }
     },
-    clear({ commit }) {
-      commit('clear');
+    resetState({ commit }) {
+      commit('resetState');
+    },
+    async searchCards({ dispatch }, { name }) {
+      await dispatch('getCards', name);
     },
   },
 });
