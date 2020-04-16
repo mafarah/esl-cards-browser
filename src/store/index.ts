@@ -43,7 +43,15 @@ export default new Vuex.Store({
       commit('stopLoading');
 
       if (response.status === 200) {
-        const newCards = response.data.cards.map((card: any) => new CardModel(card));
+        const newCards = response.data.cards.map(
+          (card: any) => new CardModel(
+            card.imageUrl,
+            card.name,
+            card.text,
+            card.set.name,
+            card.type,
+          )
+        );
         commit('addCards', newCards);
         commit('increaseCurrentPage');
 

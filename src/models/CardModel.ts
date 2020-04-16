@@ -5,11 +5,17 @@ export default class CardModel {
   set: string;
   type: string;
 
-  constructor(card: any) {
-    this.imageUrl = card.imageUrl;
-    this.name = card.name;
-    this.text = card.text;
-    this.set = card.set.name;
-    this.type = card.type;
+  constructor(
+    imageUrl: string,
+    name: string,
+    text: string,
+    set: string,
+    type: string
+  ) {
+    this.imageUrl = imageUrl;
+    this.name = name;
+    this.text = text;
+    this.set = set;
+    this.type = type;
   }
 }
