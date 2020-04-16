@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import ELS from '@/api/els';
+import ESL from '@/api/esl';
 import CardModel from '@/models/CardModel';
 
 
@@ -36,10 +36,10 @@ export default new Vuex.Store({
   },
   actions: {
     async getCards({ commit, state }, name) {
-      const els = new ELS();
+      const esl = new ESL();
 
       commit('startLoading');
-      const response = await els.getCards(state.currentPage, name);
+      const response = await esl.getCards(state.currentPage, name);
       commit('stopLoading');
 
       if (response.status === 200) {

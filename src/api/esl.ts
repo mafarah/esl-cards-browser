@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 
 
-export default class ELS {
+export default class ESL {
   client: AxiosInstance;
 
   constructor() {
