@@ -7,6 +7,10 @@
     </div>
     <cards-container />
     <loading v-if="loading" />
+    <div v-if="error">
+      <span>Error getting cards</span>
+      <button @click="() => getCards({ name: nameToSearch })">Retry</button>
+    </div>
   </div>
 </template>
 
@@ -22,7 +26,7 @@ import { mapState, mapActions } from 'vuex';
     CardsContainer,
     Loading,
   },
-  computed: mapState(['atLastPage', 'loading']),
+  computed: mapState(['atLastPage', 'error', 'loading']),
   methods: mapActions(['getCards', 'resetState', 'searchCards']),
 })
 export default class Main extends Vue {
@@ -30,26 +34,22 @@ export default class Main extends Vue {
 
   // mapped properties
   loading!: boolean;
+  error!: string;
   atLastPage !: boolean;
 
   // mapped actions
   getCards!: Function;
   resetState!: Function;
-  searchCards!: Function;
 
   constructor() {
     super();
-    this.getCards();
+    this.getCards({ name: this.nameToSearch });
 
     const onScrollHandler = () => {
       const atBottom = document.documentElement.scrollTop + window.innerHeight
         === document.documentElement.offsetHeight;
       if (atBottom && this.shouldTriggerLoad()) {
-        if (this.getNameToSearch()) {
-          this.searchCards({ name: this.getNameToSearch() });
-        } else {
-          this.getCards();
-        }
+        this.getCards({ name: this.getNameToSearch() });
       }
     };
     window.onscroll = onScrollHandler;
@@ -57,7 +57,7 @@ export default class Main extends Vue {
 
   search() {
     this.resetState();
-    this.searchCards({ name: this.nameToSearch });
+    this.getCards({ name: this.nameToSearch });
   }
 
   shouldTriggerLoad() {

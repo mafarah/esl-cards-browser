@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import ESL from '@/api/esl';
 import CardModel from '@/models/CardModel';
+import EslCardModel from '@/models/EslCardModel';
 
 
 Vue.use(Vuex);
@@ -12,6 +13,7 @@ export default new Vuex.Store({
     cards: Array<CardModel>(),
     currentPage: 1,
     atLastPage: false,
+    error: '',
   },
   mutations: {
     startLoading(state) {
@@ -33,42 +35,43 @@ export default new Vuex.Store({
       state.currentPage = 1;
       state.cards = [];
     },
+    setError(state, error) {
+      state.error = error;
+    },
   },
   actions: {
-    async getCards({ commit, state }, name) {
+    async getCards({ commit, state }, { name }) {
       const esl = new ESL();
 
       commit('startLoading');
       const response = await esl.getCards(state.currentPage, name);
       commit('stopLoading');
 
-      if (response.status === 200) {
-        const newCards = response.data.cards.map(
-          (card: any) => new CardModel(
+      if (response.cards) {
+        const newCards = response.cards.map(
+          (card: EslCardModel) => new CardModel(
             card.imageUrl,
             card.name,
             card.text,
             card.set.name,
             card.type,
-          )
+          ),
         );
         commit('addCards', newCards);
         commit('increaseCurrentPage');
+        commit('setError', '');
 
         // eslint-disable-next-line no-underscore-dangle
-        const atlastPage = !response.data._links || !response.data._links.next;
+        const atlastPage = !response._links || !response._links.next;
         if (atlastPage) {
           commit('reachedLastPage');
         }
       } else {
-        commit('setError', 'Error loading cards');
+        commit('setError', response.message);
       }
     },
     resetState({ commit }) {
       commit('resetState');
-    },
-    async searchCards({ dispatch }, { name }) {
-      await dispatch('getCards', name);
     },
   },
 });

@@ -10,7 +10,7 @@ export default class CardModel {
     name: string,
     text: string,
     set: string,
-    type: string
+    type: string,
   ) {
     this.imageUrl = imageUrl;
     this.name = name;
