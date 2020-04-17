@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import EslGetCardsResponse from '@/models/EslGetCardsResponse';
+import { CARDS_PAGE_SIZE } from '@/constants/values';
 
 
 export default class ESL {
@@ -15,7 +16,7 @@ export default class ESL {
     try {
       const endpoint = Math.random() < 0.5 ? 'cards' : 'cardss';
       // eslint-disable-next-line
-      const response = await this.client.get<EslGetCardsResponse>(`${endpoint}?pageSize=20&page=${page}&name=${name}`);
+      const response = await this.client.get<EslGetCardsResponse>(`${endpoint}?pageSize=${CARDS_PAGE_SIZE}&page=${page}&name=${name}`);
       return response.data;
     } catch (err) {
       if (err.toJSON()) {

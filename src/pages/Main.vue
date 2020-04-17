@@ -45,14 +45,15 @@ export default class Main extends Vue {
     super();
     this.getCards({ name: this.nameToSearch });
 
-    const onScrollHandler = () => {
-      const atBottom = document.documentElement.scrollTop + window.innerHeight
-        === document.documentElement.offsetHeight;
-      if (atBottom && this.shouldTriggerLoad()) {
-        this.getCards({ name: this.getNameToSearch() });
-      }
-    };
-    window.onscroll = onScrollHandler;
+    const atBottom = document.documentElement.scrollTop + window.innerHeight
+      === document.documentElement.offsetHeight;
+    window.onscroll = () => this.onScrollHandler(atBottom);
+  }
+
+  onScrollHandler(atBottom: boolean) {
+    if (atBottom && this.shouldTriggerLoad()) {
+      this.getCards({ name: this.getNameToSearch() });
+    }
   }
 
   search() {
