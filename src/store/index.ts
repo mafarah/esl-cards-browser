@@ -2,76 +2,73 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import ESL from '@/api/esl';
 import CardModel from '@/models/CardModel';
-import EslCardModel from '@/models/EslCardModel';
+import { Context, State } from '@/types/State';
+import { Card as ESlCard } from '@/types/Esl';
 
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {
-    loading: false,
-    cards: Array<CardModel>(),
-    currentPage: 1,
-    atLastPage: false,
-    error: '',
+export const baseState: State = {
+  loading: false,
+  cards: Array<CardModel>(),
+  currentPage: 1,
+  atLastPage: false,
+  error: '',
+};
+
+export const mutations = {
+  startLoading: (state: State) => { state.loading = true; },
+  stopLoading: (state: State) => { state.loading = false; },
+  addCards: (state: State, newCards: CardModel[]) => {
+    state.cards = [...state.cards, ...newCards];
   },
-  mutations: {
-    startLoading(state) {
-      state.loading = true;
-    },
-    stopLoading(state) {
-      state.loading = false;
-    },
-    addCards(state, newCards: CardModel[]) {
-      state.cards = [...state.cards, ...newCards];
-    },
-    increaseCurrentPage(state) {
-      state.currentPage += 1;
-    },
-    reachedLastPage(state) {
-      state.atLastPage = true;
-    },
-    resetState(state) {
-      state.currentPage = 1;
-      state.cards = [];
-    },
-    setError(state, error) {
-      state.error = error;
-    },
+  increaseCurrentPage: (state: State) => { state.currentPage += 1; },
+  reachedLastPage: (state: State) => { state.atLastPage = true; },
+  resetState: (state: State) => {
+    state.currentPage = 1;
+    state.cards = [];
   },
-  actions: {
-    async getCards({ commit, state }, { name }) {
-      const esl = new ESL();
+  setError: (state: State, error: string) => { state.error = error; },
+};
 
-      commit('startLoading');
-      const response = await esl.getCards(state.currentPage, name);
-      commit('stopLoading');
+export const actions = {
+  getCards: async ({ commit, state }: Context, { name }: { name: string }) => {
+    const esl = new ESL();
 
-      if (response.cards) {
-        const newCards = response.cards.map(
-          (card: EslCardModel) => new CardModel(
-            card.imageUrl,
-            card.name,
-            card.text,
-            card.set.name,
-            card.type,
-          ),
-        );
-        commit('addCards', newCards);
-        commit('increaseCurrentPage');
-        commit('setError', '');
+    commit('startLoading');
+    const response = await esl.getCards(state.currentPage, name);
+    commit('stopLoading');
 
-        // eslint-disable-next-line no-underscore-dangle
-        const atlastPage = !response._links || !response._links.next;
-        if (atlastPage) {
-          commit('reachedLastPage');
-        }
-      } else {
-        commit('setError', response.message);
+    if (response.cards) {
+      const newCards = response.cards.map(
+        (card: ESlCard) => new CardModel(
+          card.imageUrl,
+          card.name,
+          card.text,
+          card.set.name,
+          card.type,
+        ),
+      );
+      commit('addCards', newCards);
+      commit('increaseCurrentPage');
+      commit('setError', '');
+
+      // eslint-disable-next-line no-underscore-dangle
+      const atlastPage = !response._links || !response._links.next;
+      if (atlastPage) {
+        commit('reachedLastPage');
       }
-    },
-    resetState({ commit }) {
-      commit('resetState');
-    },
+    } else {
+      commit('setError', response.message);
+    }
   },
+  resetState({ commit }: Context) {
+    commit('resetState');
+  },
+};
+
+export default new Vuex.Store({
+  state: baseState,
+  mutations,
+  actions,
 });

@@ -1,4 +1,4 @@
-import Vuex, { Store } from 'vuex'
+import Vuex from 'vuex'
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Main from '@/pages/Main.vue';
 import CardsContainer from '@/components/CardsContainer.vue';
