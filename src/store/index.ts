@@ -17,8 +17,7 @@ export const baseState: State = {
 };
 
 export const mutations = {
-  startLoading: (state: State) => { state.loading = true; },
-  stopLoading: (state: State) => { state.loading = false; },
+  setLoading: (state: State, loading: boolean) => { state.loading = loading; },
   addCards: (state: State, newCards: CardModel[]) => {
     state.cards = [...state.cards, ...newCards];
   },
@@ -34,10 +33,9 @@ export const mutations = {
 export const actions = {
   getCards: async ({ commit, state }: Context, { name }: { name: string }) => {
     const esl = new ESL();
-
-    commit('startLoading');
+    commit('setLoading', true);
     const response = await esl.getCards(state.currentPage, name);
-    commit('stopLoading');
+    commit('setLoading', false);
 
     if (response.cards) {
       const newCards = response.cards.map(
