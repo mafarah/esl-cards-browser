@@ -4,9 +4,23 @@ import CardModel from '@/models/CardModel';
 
 jest.mock('@/api/esl', () => {
   return jest.fn().mockImplementation(() => {
-    return { getCards: jest.fn(() => ({ cards: [], '_links': {} })) };
+    return { getCards: jest.fn(() => ({ cards: [{
+      imageUrl: 'imageUrl',
+      name: 'name',
+      text: 'text',
+      set: { name: 'set' },
+      type: 'type',
+    }], '_links': {} })) };
   });
 });
+
+const newCards = [new CardModel(
+  'imageUrl',
+  'name',
+  'text',
+  'set',
+  'type',
+)];
 
 const state = baseState;
 describe('store/index', () => {
@@ -17,13 +31,6 @@ describe('store/index', () => {
     });
 
     it('addCards', () => {
-      const newCards = [new CardModel(
-        'imageUrl',
-        'name',
-        'text',
-        'set',
-        'type',
-      )];
       mutations.addCards(state, newCards);
       expect(state.cards).toEqual(newCards);
     });
@@ -57,7 +64,7 @@ describe('store/index', () => {
       const expectedCalls = [
         ['setLoading', true],
         ['setLoading', false],
-        ['addCards', []],
+        ['addCards', newCards],
         ['increaseCurrentPage'],
         ['setError', ''],
         ['reachedLastPage']];
