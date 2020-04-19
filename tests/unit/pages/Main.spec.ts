@@ -44,8 +44,8 @@ describe('Main.vue', () => {
     const html = wrapper.html();
 
     expect(wrapper.contains(CardsContainer)).toBeTruthy();
-    expect(html).toContain('<input id="search-input">');
-    expect(html).toContain('<button id="search-button">Search</button>');
+    expect(html).toContain('<input id="search-input"');
+    expect(html).toContain('<button id="search-button"');
 
     expect(actions.getCards).toHaveBeenCalledWith(expect.any(Object), { name: '' });
     expect(window.onscroll).toBeInstanceOf(Function);
@@ -126,5 +126,23 @@ describe('Main.vue', () => {
     wrapper.vm.onScrollHandler(false);
 
     expect(actions.getCards).not.toHaveBeenCalledWith(expect.any(Object), { name: 'name' });
+  });
+
+  it('keyupHandler method should call search', () => {
+    const wrapper: any = shallowMount(Main, { store, localVue });
+
+    wrapper.vm.search = jest.fn();
+    wrapper.vm.keyupHandler({ keyCode: 13 });
+
+    expect(wrapper.vm.search).toHaveBeenCalled();
+  });
+
+  it('keyupHandler method should not call search', () => {
+    const wrapper: any = shallowMount(Main, { store, localVue });
+
+    wrapper.vm.search = jest.fn();
+    wrapper.vm.keyupHandler({ keyCode: 14 });
+
+    expect(wrapper.vm.search).not.toHaveBeenCalled();
   });
 });

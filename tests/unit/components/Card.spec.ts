@@ -17,9 +17,9 @@ describe('Card.vue', () => {
     });
     const html = wrapper.html();
     expect(html).toContain('<img src="imageUrl" class="image">');
-    expect(html).toContain('<li>Name: name</li>');
-    expect(html).toContain('<li>Text: text</li>');
-    expect(html).toContain('<li>Set: set</li>');
-    expect(html).toContain('<li>Type: type</li>');
+    expect(html).toContain('name');
+    expect(html).toContain('text');
+    expect(html).toContain('set');
+    expect(html).toContain('type');
   });
 });

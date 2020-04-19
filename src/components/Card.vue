@@ -4,10 +4,22 @@
       class="image"
       :src="card.imageUrl" />
     <ul>
-      <li>Name: {{ card.name }}</li>
-      <li>Text: {{ card.text }}</li>
-      <li>Set: {{ card.set }}</li>
-      <li>Type: {{ card.type }}</li>
+      <li>
+        <span class="property-name">Name: </span>
+        <span class="property-value">{{ card.name }}</span>
+      </li>
+      <li>
+        <span class="property-name">Text: </span>
+        <span class="property-value">{{ card.text }}</span>
+      </li>
+      <li>
+        <span class="property-name">Set: </span>
+        <span class="property-value">{{ card.set }}</span>
+      </li>
+      <li>
+        <span class="property-name">Type: </span>
+        <span class="property-value">{{ card.type }}</span>
+      </li>
     </ul>
   </div>
 </template>
@@ -25,17 +37,42 @@ export default class Card extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+@import "@/styles/variables.scss";
+
 ul {
   list-style-type: none;
   padding-left: 0;
 }
 
+li {
+  border-bottom: 1px solid;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+}
+
 .card {
-  width: 200px;
   margin: 20px;
+  width: 250px;
 }
 
 .image {
-  width: 200px;
+  height: 415px;
+  width: 250px;
+}
+
+.property-name {
+  color: $palette-primary;
+  font-weight: bold;
+}
+
+@media (min-width: $break-mobile) {
+  .card {
+    width: 200px;
+  }
+
+  .image {
+    height: 340px;
+    width: 200px;
+  }
 }
 </style>

@@ -18,7 +18,12 @@ export default class App extends Vue {}
 </script>
 
 <style lang="scss">
+@import "@/styles/variables.scss";
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: $font-family;
+  color: $palette-secondary;
+  background: url(/dark-honeycomb.png) repeat 0 0;
+  text-shadow: $text-shadow;
 }
 </style>

@@ -27,6 +27,8 @@ export default class CardsContainer extends Vue {
 </script>
 
 <style lang="scss">
+@import "@/styles/variables.scss";
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   display: flex;
@@ -35,8 +37,9 @@ export default class CardsContainer extends Vue {
 }
 
 #cards-container {
-  width: 960px;
+  max-width: $break-desktop;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 </style>
