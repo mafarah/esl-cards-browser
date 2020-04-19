@@ -2,20 +2,39 @@
 // https://nightwatchjs.org/guide
 
 module.exports = {
-  'default e2e tests': (browser) => {
+  'loads the first cards': (browser) => {
     browser
       .init()
       .waitForElementVisible('#app')
-      .assert.elementPresent('.hello')
-      .assert.containsText('h1', 'Welcome to Your Vue.js + TypeScript App')
-      .assert.elementCount('img', 1)
+      .assert.elementPresent('#cards-container')
+      .assert.elementPresent('#search-input')
+      .assert.elementPresent('#search-button')
+      .waitForElementVisible('.loading')
+      .waitForElementVisible('.image')
+      .assert.elementCount('.image', 20)
       .end();
   },
 
-  'example e2e test using a custom command': (browser) => {
+  'loads cards with infinite scroll': (browser) => {
     browser
-      .openHomepage()
-      .assert.elementPresent('.hello')
+      .init()
+      .waitForElementVisible('.image')
+      .assert.elementCount('.image', 20)
+      .execute('window.scrollTo(0,document.body.scrollHeight);')
+      .waitForElementVisible('.loading')
+      .assert.elementCount('.image', 40)
+      .end();
+  },
+
+  'search for cards': (browser) => {
+    browser
+      .init()
+      .waitForElementVisible('.image')
+      .setValue('input#search-input', 'roll')
+      .click('button#search-button')
+      .assert.elementCount('.image', 0)
+      .waitForElementVisible('.loading')
+      .assert.elementCount('.image', 7)
       .end();
   },
 };
