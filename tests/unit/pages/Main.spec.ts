@@ -44,8 +44,8 @@ describe('Main.vue', () => {
     const html = wrapper.html();
 
     expect(wrapper.contains(CardsContainer)).toBeTruthy();
-    expect(html).toContain('<input>');
-    expect(html).toContain('<button>Search</button>');
+    expect(html).toContain('<input id="search-input">');
+    expect(html).toContain('<button id="search-button">Search</button>');
 
     expect(actions.getCards).toHaveBeenCalledWith(expect.any(Object), { name: '' });
     expect(window.onscroll).toBeInstanceOf(Function);

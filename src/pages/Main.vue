@@ -2,8 +2,8 @@
   <div id="main">
     <h1>Elder Scrolls Legends Cards Browser</h1>
     <div>
-      <input v-model="nameToSearch" />
-      <button @click="search">Search</button>
+      <input id="search-input" v-model="nameToSearch" />
+      <button id="search-button" @click="search">Search</button>
     </div>
     <cards-container />
     <loading v-if="loading" />
