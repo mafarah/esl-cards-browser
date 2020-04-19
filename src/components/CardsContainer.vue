@@ -2,7 +2,7 @@
   <div id="cards-container">
     <card
       v-for="card in cards"
-      :key="card.id"
+      :key="card.name"
       :card="card" />
   </div>
 </template>
@@ -42,4 +42,5 @@ export default class CardsContainer extends Vue {
   flex-wrap: wrap;
   justify-content: center;
 }
+
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div id="main">
     <h1 class="title">{{ t('TITLE') }}</h1>
-    <div>
+    <div id="search-bar">
       <input
         id="search-input"
         placeholder="Name"
@@ -14,13 +14,15 @@
         {{ t('SEARCH_BUTTON_TEXT') }}
       </button>
     </div>
-    <cards-container />
-    <loading v-if="loading" />
-    <div v-if="error">
-      <span class="error-message">{{ t('ERROR_LOADING') }}</span>
-      <button
-        @click="() => getCards({ name: nameToSearch })"
-      >{{ t('RETRY_BUTTON_TEXT') }}</button>
+    <div id="content">
+      <cards-container />
+      <loading v-if="loading" />
+      <div v-if="error">
+        <span class="error-message">{{ t('ERROR_LOADING') }}</span>
+        <button
+          @click="() => getCards({ name: nameToSearch })"
+        >{{ t('RETRY_BUTTON_TEXT') }}</button>
+      </div>
     </div>
   </div>
 </template>
@@ -47,6 +49,7 @@ import t from '@/utils/messages';
 })
 export default class Main extends Vue {
   nameToSearch = '';
+  initialSearchBarOffsetTop!: number;
 
   // mapped properties
   loading!: boolean;
@@ -67,6 +70,18 @@ export default class Main extends Vue {
   onScrollHandler(atBottom: boolean) {
     if (atBottom && this.shouldTriggerLoad()) {
       this.getCards({ name: this.getNameToSearch() });
+    }
+    const searchBar = document.getElementById('search-bar');
+
+    if (searchBar !== null) {
+      if (!this.initialSearchBarOffsetTop) {
+        this.initialSearchBarOffsetTop = searchBar.offsetTop;
+      }
+      if (window.pageYOffset >= this.initialSearchBarOffsetTop) {
+        searchBar.classList.add('sticky');
+      } else {
+        searchBar.classList.remove('sticky');
+      }
     }
   }
 
@@ -134,4 +149,27 @@ button {
   font-size: 20px;
 }
 
+#search-bar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid $palette-secondary;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: black;
+}
+
+.sticky + #content {
+  padding-top: 30px;
+}
+
+#content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 </style>

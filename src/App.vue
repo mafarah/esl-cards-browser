@@ -20,10 +20,13 @@ export default class App extends Vue {}
 <style lang="scss">
 @import "@/styles/variables.scss";
 
+html {
+  background: url(/dark-honeycomb.png) repeat 0 0;
+}
+
 #app {
   font-family: $font-family;
   color: $palette-secondary;
-  background: url(/dark-honeycomb.png) repeat 0 0;
   text-shadow: $text-shadow;
 }
 </style>
