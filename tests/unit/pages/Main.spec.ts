@@ -67,7 +67,7 @@ describe('Main.vue', () => {
     const wrapper = shallowMount(Main, { store, localVue });
     const html = wrapper.html();
 
-    expect(html).toContain('<button>Retry</button>');
+    expect(html).toContain('<button>RETRY</button>');
   });
 
   it('executes search method', () => {

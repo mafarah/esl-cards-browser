@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-    <h1 class="title">Elder Scrolls Legends Cards Browser</h1>
+    <h1 class="title">{{ t('TITLE') }}</h1>
     <div>
       <input
         id="search-input"
@@ -11,23 +11,27 @@
         id="search-button"
         @click="search"
       >
-        SEARCH
+        {{ t('SEARCH_BUTTON_TEXT') }}
       </button>
     </div>
     <cards-container />
     <loading v-if="loading" />
     <div v-if="error">
-      <span>Error getting cards</span>
-      <button @click="() => getCards({ name: nameToSearch })">Retry</button>
+      <span class="error-message">{{ t('ERROR_LOADING') }}</span>
+      <button
+        @click="() => getCards({ name: nameToSearch })"
+      >{{ t('RETRY_BUTTON_TEXT') }}</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { mapState, mapActions } from 'vuex';
+
 import CardsContainer from '@/components/CardsContainer.vue';
 import Loading from '@/components/Loading.vue';
-import { mapState, mapActions } from 'vuex';
+import t from '@/utils/messages';
 
 
 @Component({
@@ -36,7 +40,10 @@ import { mapState, mapActions } from 'vuex';
     Loading,
   },
   computed: mapState(['atLastPage', 'error', 'loading']),
-  methods: mapActions(['getCards', 'resetState', 'searchCards']),
+  methods: {
+    t,
+    ...mapActions(['getCards', 'resetState', 'searchCards']),
+  },
 })
 export default class Main extends Vue {
   nameToSearch = '';
@@ -101,7 +108,6 @@ export default class Main extends Vue {
 .title {
   color: $palette-primary;
   text-align: center;
-  text-shadow: 0px 0px 10px $palette-primary;
 }
 
 #search-input {
@@ -114,7 +120,7 @@ export default class Main extends Vue {
   padding-left: 5px;
 }
 
-#search-button {
+button {
   background-color: $palette-primary;
   border: 0;
   font-family: $font-family;
@@ -123,4 +129,9 @@ export default class Main extends Vue {
   height: 30px;
   margin: 10px;
 }
+
+.error-message {
+  font-size: 20px;
+}
+
 </style>
