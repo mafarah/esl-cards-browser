@@ -112,9 +112,10 @@ describe('Main.vue', () => {
 
   it('onScrollHandler method calls getCards', () => {
     const wrapper: any = shallowMount(Main, { store, localVue });
+    const searchBar = document.createElement('div');
 
     wrapper.vm.nameToSearch = 'name';
-    wrapper.vm.onScrollHandler(true);
+    wrapper.vm.onScrollHandler(true, searchBar);
 
     expect(actions.getCards).toHaveBeenCalledWith(expect.any(Object), { name: 'name' });
   });
@@ -123,7 +124,7 @@ describe('Main.vue', () => {
     const wrapper: any = shallowMount(Main, { store, localVue });
 
     wrapper.vm.nameToSearch = 'name';
-    wrapper.vm.onScrollHandler(false);
+    wrapper.vm.onScrollHandler(false, null);
 
     expect(actions.getCards).not.toHaveBeenCalledWith(expect.any(Object), { name: 'name' });
   });
