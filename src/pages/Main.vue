@@ -34,6 +34,7 @@ import { mapState, mapActions } from 'vuex';
 import CardsContainer from '@/components/CardsContainer.vue';
 import Loading from '@/components/Loading.vue';
 import t from '@/utils/messages';
+import * as values from '@/constants/values';
 
 
 @Component({
@@ -86,8 +87,8 @@ export default class Main extends Vue {
   }
 
   static atBottom() {
-    return document.documentElement.scrollTop + window.innerHeight
-      === document.documentElement.offsetHeight;
+    return document.documentElement.scrollTop + window.innerHeight + values.INFINITE_SCROLL_OFFSET
+      > document.documentElement.offsetHeight;
   }
 
   search() {
