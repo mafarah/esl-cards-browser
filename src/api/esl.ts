@@ -14,9 +14,13 @@ export default class ESL {
 
   public async getCards(page: number, name = '') {
     try {
-      const endpoint = Math.random() > -0.5 ? 'cards' : 'cardss';
-      // eslint-disable-next-line
-      const response = await this.client.get<GetCardsResponse>(`${endpoint}?pageSize=${CARDS_PAGE_SIZE}&page=${page}&name=${name}`);
+      const queryParams = new URLSearchParams();
+      queryParams.append('pageSize', CARDS_PAGE_SIZE);
+      queryParams.append('page', page.toString());
+      if (name !== '') {
+        queryParams.append('name', name);
+      }
+      const response = await this.client.get<GetCardsResponse>(`cards?${queryParams}`);
       return response.data;
     } catch (err) {
       if (err.toJSON()) {
