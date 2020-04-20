@@ -15,22 +15,22 @@ export interface Card {
   unique: boolean;
   imageUrl: string;
   id: string;
-};
+}
 
 export interface Set {
   id: string;
   name: string;
   _self: string;
-};
+}
 
 export interface Links {
   next: string;
   prev: string;
   _pageSize: number;
   _totalCount: number;
-};
+}
 
 export interface GetCardsResponse {
   cards: Card[];
   _links: Links;
-};
+}

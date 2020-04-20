@@ -1,4 +1,4 @@
-import Vuex, { Store } from 'vuex'
+import Vuex from 'vuex';
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Card from '@/components/Card.vue';
 import CardsContainer from '@/components/CardsContainer.vue';
@@ -9,7 +9,6 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 
 describe('CardsContainer.vue', () => {
-  let store: any;
   const state = {
     cards: [new CardModel(
       'imageUrl',
@@ -20,7 +19,7 @@ describe('CardsContainer.vue', () => {
     )],
   };
 
-  store = new Vuex.Store({ state });
+  const store = new Vuex.Store({ state });
 
   it('renders a CardsContainer component with a Card inside', () => {
     const wrapper = shallowMount(CardsContainer, { store, localVue });

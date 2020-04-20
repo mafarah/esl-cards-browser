@@ -1,4 +1,4 @@
-import Vuex from 'vuex'
+import Vuex from 'vuex';
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Main from '@/pages/Main.vue';
 import CardsContainer from '@/components/CardsContainer.vue';
@@ -9,6 +9,27 @@ import CardModel from '@/models/CardModel';
 const localVue = createLocalVue();
 localVue.use(Vuex);
 
+const card = new CardModel(
+  'imageUrl',
+  'name',
+  'text',
+  'set',
+  'type',
+);
+
+let store: any;
+
+const actions = {
+  getCards: jest.fn(() => [card]),
+  resetState: jest.fn(),
+};
+
+const baseState = {
+  loading: false,
+  error: '',
+  atLastPage: false,
+};
+
 describe('Main.vue', () => {
   beforeEach(() => {
     store = new Vuex.Store({ state: baseState, actions });
@@ -17,27 +38,6 @@ describe('Main.vue', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-
-  const card = new CardModel(
-    'imageUrl',
-    'name',
-    'text',
-    'set',
-    'type',
-  );
-
-  let store: any;
-
-  const actions = {
-    getCards: jest.fn(() => [card]),
-    resetState: jest.fn(),
-  };
-
-  const baseState = {
-    loading: false,
-    error: '',
-    atLastPage: false,
-  };
 
   it('renders Main page', () => {
     const wrapper = shallowMount(Main, { store, localVue });

@@ -8,9 +8,9 @@ export interface State {
   currentPage: number;
   atLastPage: boolean;
   error: string;
-};
+}
 
 export interface Context {
   commit: Commit;
   state: State;
-};
+}

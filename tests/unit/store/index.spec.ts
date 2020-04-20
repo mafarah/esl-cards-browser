@@ -2,17 +2,18 @@ import { baseState, actions, mutations } from '@/store';
 import CardModel from '@/models/CardModel';
 
 
-jest.mock('@/api/esl', () => {
-  return jest.fn().mockImplementation(() => {
-    return { getCards: jest.fn(() => ({ cards: [{
+jest.mock('@/api/esl', () => jest.fn().mockImplementation(() => ({
+  getCards: jest.fn(() => ({
+    cards: [{
       imageUrl: 'imageUrl',
       name: 'name',
       text: 'text',
       set: { name: 'set' },
       type: 'type',
-    }], '_links': {} })) };
-  });
-});
+    }],
+    _links: {},
+  })),
+})));
 
 const newCards = [new CardModel(
   'imageUrl',
