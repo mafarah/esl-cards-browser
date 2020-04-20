@@ -1,34 +1,34 @@
-# esl-cards
+# Elder Scrolls Legends Cards Browser
+This project is a browser for Elder Scroll Legends cards. It retrieves the cards from this API https://docs.elderscrollslegends.io/ and displays them in a infinitely scrollable grid.
+
+## Prerrequisites
+`node.js: 8.11.0+`
 
 ## Project setup
 ```
+git clone https://github.com/mafarah/esl-cards-browser.git
+cd esl-cards-browser
 npm install
 ```
 
-### Compiles and hot-reloads for development
+## Run the project
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+After running this command, the server will be available at http://localhost:8080
 
-### Run your unit tests
+## Run the unit tests
 ```
 npm run test:unit
 ```
 
-### Run your end-to-end tests
+## Run the end-to-end tests
 ```
 npm run test:e2e
 ```
 
-### Lints and fixes files
+## Lints and fixes files
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
