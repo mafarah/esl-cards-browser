@@ -1,3 +1,5 @@
+![CI Test](https://github.com/mafarah/esl-cards-browser/workflows/Node.js%20CI/badge.svg)
+
 # Elder Scrolls Legends Cards Browser
 This project is a browser for Elder Scroll Legends cards. It retrieves the cards from this API https://docs.elderscrollslegends.io/ and displays them in a infinitely scrollable grid.
 
