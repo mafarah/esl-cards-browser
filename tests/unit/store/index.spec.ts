@@ -49,6 +49,7 @@ describe('store/index', () => {
       mutations.resetState(state);
       expect(state.currentPage).toEqual(1);
       expect(state.cards).toEqual([]);
+      expect(state.atLastPage).toEqual(false);
     });
 
     it('setError', () => {

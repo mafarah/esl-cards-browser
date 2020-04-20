@@ -26,6 +26,7 @@ export const mutations = {
   resetState: (state: State) => {
     state.currentPage = 1;
     state.cards = [];
+    state.atLastPage = false;
   },
   setError: (state: State, error: string) => { state.error = error; },
 };
