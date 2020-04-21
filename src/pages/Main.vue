@@ -74,9 +74,11 @@ export default class Main extends Vue {
     }
 
     if (searchBar !== null) {
+      // saves the initial position of the search bar so we know where to put it back
       if (!this.initialSearchBarOffsetTop) {
         this.initialSearchBarOffsetTop = searchBar.offsetTop;
       }
+      // if the search bar reaches the top it remains there
       if (window.pageYOffset >= this.initialSearchBarOffsetTop) {
         searchBar.classList.add('sticky');
       } else {
@@ -85,6 +87,7 @@ export default class Main extends Vue {
     }
   }
 
+  // returns true if scroll position is values.INFINITE_SCROLL_OFFSET or less from the bottom
   static atBottom() {
     return document.documentElement.scrollTop + window.innerHeight + values.INFINITE_SCROLL_OFFSET
       > document.documentElement.offsetHeight;
@@ -104,6 +107,7 @@ export default class Main extends Vue {
   }
 
   keyupHandler(event: KeyboardEvent) {
+    // executes it if the user presses Enter
     if (event.keyCode === 13) {
       this.search();
     }
